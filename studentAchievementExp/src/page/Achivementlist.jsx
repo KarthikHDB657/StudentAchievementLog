@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { AchievementContext } from '../context/achievementContext';
 import AchievementCard from './AchievementCard';
 import { fountain600 } from '@ellucian/react-design-system/core/styles/tokens';
+import EditForm from './EditForm';
 
 const styles = () => ({
   card: {
@@ -50,6 +51,7 @@ const AchievementList = (props) => {
         .then(response => response.json())
         .then(data => {
           setDataFetched(data);
+         console.log(data);
         })
         .catch(error => {
           console.error('Error fetching achievements:', error);
@@ -77,18 +79,24 @@ const AchievementList = (props) => {
     setDeleteDialogOpen(false);
     setSelectedAchievement(null);
   };
-
-  const handleEditDialogClose = () => {
-    setEditDialogOpen(false);
-  };
-
+  
   const handleDeleteConfirm = () => {
     handleDelete();
     setDeleteDialogOpen(false);
   };
+  
+  const handleEditDialogOpen = (achievement) => {
+    setSelectedAchievement(achievement);
+    setEditDialogOpen(true);
+  };
+  
+  const handleEditDialogClose = () => {
+    setEditDialogOpen(false);
+    
+  };
 
   const navigateToAddAchievement = () => {
-    history.push('/add-achievement'); // Change to the correct route
+    history.push('/add-achievement'); 
   };
 
   return (
@@ -104,16 +112,22 @@ const AchievementList = (props) => {
              key={achievement._id}
              achievement={achievement}
              handleDeleteClick={() => handleDeleteDialogOpen(achievement)}
+             handleEditClick={() => handleEditDialogOpen(achievement)}
              classes={classes}
           />
         ))}
       </Grid>
+      {/* Edit Dialog */}
       <Dialog open={editDialogOpen} onClose={handleEditDialogClose}>
         <DialogTitle>Edit Achievement</DialogTitle>
-        <DialogActions>
-          <Button variant="contained" color="secondary" onClick={handleDeleteConfirm}>Edit</Button>
-          <Button variant="contained" onClick={handleEditDialogClose}>Cancel</Button>
-        </DialogActions>
+        <DialogContent>
+          {/* Use the EditForm component here */}
+          <EditForm
+            classes={classes}
+            achievement={selectedAchievement}
+            handleEditDialogClose={handleEditDialogClose}
+          />
+        </DialogContent>
       </Dialog>
 
       {/* Delete Dialog */}

@@ -9,7 +9,7 @@ import AchievementList from './Achivementlist';
 import AchievementForm from './AchievementForm';
 import { AchievementProvider } from '../context/achievementContext';
 
-// for more information on react router: https://v5.reactrouter.com/web/guides/quick-start
+
 
 const RouterPage = (props) => {
     return (

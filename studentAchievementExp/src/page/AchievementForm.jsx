@@ -15,7 +15,6 @@ import {
 import React, { useState, useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import { AchievementContext } from '../context/achievementContext';
-// import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
 const styles = (theme) => ({
@@ -128,7 +127,7 @@ const AchievementForm = (props) => {
     formData.append('givenBy', givenBy);
     formData.append('dateOfPosting', dateOfPosting);
     formData.append('briefDescription', briefDescription);
-    formData.append('image', imageAttachment); // Append the image file
+    formData.append('image', imageAttachment); // Append the image file url
     formData.append('linkToWebsite', linkToWebsite);
     try {
             // Make the POST request with FormData
@@ -251,6 +250,7 @@ const AchievementForm = (props) => {
                      type="file"
                      accept="image/*"
                      onChange={(e) => setImageAttachment(e.target.files[0])}
+                     value ={imageAttachment}
                      error={!!errors.imageAttachment}
                      helperText={errors.imageAttachment}
                  />

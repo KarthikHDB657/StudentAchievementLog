@@ -4,7 +4,6 @@ import { Icon } from '@ellucian/ds-icons/lib';
 import PropTypes from 'prop-types';
 
 const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, classes }) => {
-  // const imageUrl = `http://localhost:5000/${achievement.imageUrl.replace(/\\/g, '/')}`;
   return (
     <Card className={classes.card}>
       <CardHeader
