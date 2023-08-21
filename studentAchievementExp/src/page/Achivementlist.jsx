@@ -13,7 +13,7 @@ const styles = () => ({
   card: {
     flex: '0 0 calc(33.33% - 10px)', // Adjust the width and margin as needed
     marginBottom: '20px',
-    marginTop:'20px'
+    marginTop:'20px',
   },
   centerContent: {
     textAlign: 'center',
@@ -29,7 +29,10 @@ const styles = () => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  }
+    margin: '0 -10px',
+  },
+  
+  
 });
 
 const AchievementList = (props) => {
@@ -106,7 +109,7 @@ const AchievementList = (props) => {
           Add Achievement
         </Button>
       </Grid>
-      <Grid container direction="row" justifyContent="space-between" alignItems="center" marginBottom={2}>
+      <Grid container direction="row" alignItems="stretch" marginBottom={2}>
         {achievements.map((achievement) => (
           <AchievementCard
              key={achievement._id}

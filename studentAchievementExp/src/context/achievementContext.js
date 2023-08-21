@@ -24,6 +24,7 @@ export const AchievementProvider = ({ children }) => {
 
   const deleteAchievement = async (achievementId) => {
     try {
+      //deleting the id 
       await axios.delete(`http://localhost:5000/api/achievements/${achievementId}`);
       setAchievements((prevAchievements) =>
         prevAchievements.filter((achievement) => achievement._id !== achievementId)

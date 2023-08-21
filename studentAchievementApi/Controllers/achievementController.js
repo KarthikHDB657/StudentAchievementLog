@@ -1,5 +1,6 @@
 const Achievement = require('../models/Achievement');
-
+const path = require('path');
+const fs = require('fs');
 const createAchievement = async (req, res) => {
   try {
     const {
@@ -100,13 +101,25 @@ const updateAchievement = async (req, res) => {
 
 const deleteAchievement = async (req, res) => {
   try {
-    const achievement = await Achievement.findByIdAndDelete(req.params.id);
+    const achievementId = req.params.id;
+
+    // Fetch achievement from the database and get the imageUrl
+    const achievement = await Achievement.findById(achievementId);
     if (!achievement) {
-      return res.status(404).json({ error: 'Achievement not found.' });
+      return res.status(404).json({ error: 'Achievement not found' });
     }
-    res.status(204).end();
+
+    // Delete image from filesystem using path to get the absolute path
+    const imagePath = path.join(__dirname, '..', achievement.imageUrl);
+    fs.unlinkSync(imagePath);
+
+    // Delete achievement from the database
+    await Achievement.findByIdAndDelete(achievementId);
+
+    res.status(204).end(); // Successful deletion, no content
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while deleting the achievement.' });
+    console.error('Error deleting achievement:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

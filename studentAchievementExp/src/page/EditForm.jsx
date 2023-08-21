@@ -21,7 +21,7 @@ const EditForm = (props) => {
   const { setPageTitle } = usePageControl();
   const [studentName, setStudentName] = useState(achievement.studentName);
   const [category, setCategory] = useState(achievement.category);
-  const [achievementTitle, setAchievementTitle] = useState(achievement.achievementTitle);
+  const [title, settitle] = useState(achievement.title);
   const [dateOfAchievement, setDateOfAchievement] = useState(achievement.dateOfAchievement);
   const [givenBy, setGivenBy] = useState(achievement.givenBy);
   const [dateOfPosting, setDateOfPosting] = useState(achievement.dateOfPosting);
@@ -32,7 +32,7 @@ const EditForm = (props) => {
   const [errors, setErrors] = useState({
     studentName: '',
     category: '',
-    achievementTitle: '',
+    title: '',
     dateOfAchievement: '',
     givenBy: '',
     dateOfPosting: '',
@@ -60,8 +60,8 @@ const handleSave = async () => {
     if (!validateName(studentName)) {
         newErrors.studentName = 'Invalid Student name format';
     }
-    if (!achievementTitle) {
-       newErrors.achievementTitle = 'Achievement Title is required';
+    if (!title) {
+       newErrors.title = 'Achievement Title is required';
     }
      
     if(!dateOfAchievement) {
@@ -107,7 +107,7 @@ const handleSave = async () => {
     const formData = new FormData();
     formData.append('studentName', studentName);
     formData.append('category', category);
-    formData.append('achievementTitle', achievementTitle);
+    formData.append('title', title);
     formData.append('dateOfAchievement', dateOfAchievement);
     formData.append('givenBy', givenBy);
     formData.append('dateOfPosting', dateOfPosting);
@@ -178,10 +178,10 @@ const handleSave = async () => {
             <FormControl className={classes.field}>
               <TextField
                         label="Achievement Title"
-                        value={achievementTitle}
-                        onChange={(e) => setAchievementTitle(e.target.value)}
-                        error={!!errors.achievementTitle}
-                        helperText={errors.achievementTitle}
+                        value={title}
+                        onChange={(e) => settitle(e.target.value)}
+                        error={!!errors.title}
+                        helperText={errors.title}
                />
             </FormControl>
             <FormControl className={classes.field}>

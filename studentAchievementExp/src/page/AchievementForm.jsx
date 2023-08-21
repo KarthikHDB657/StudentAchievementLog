@@ -35,7 +35,7 @@ const AchievementForm = (props) => {
     const { classes} = props;
     const history = useHistory();
     const [category, setCategory] = useState('');
-    const [achievementTitle, setAchievementTitle] = useState('');
+    const [title, settitle] = useState('');
     const [dateOfAchievement, setDateOfAchievement] = useState('');
     const [studentName,setStudentName] = useState('');
     const [givenBy, setGivenBy] = useState('');
@@ -48,7 +48,7 @@ const AchievementForm = (props) => {
     const [errors, setErrors] = useState({
         studentName: '',
         category: '',
-        achievementTitle: '',
+        title: '',
         dateOfAchievement: '',
         givenBy: '',
         dateOfPosting: '',
@@ -75,8 +75,8 @@ const AchievementForm = (props) => {
        if (!validateName(studentName)) {
          newErrors.studentName = 'Invalid Student name format';
       }
-      if (!achievementTitle) {
-        newErrors.achievementTitle = 'Achievement Title is required';
+      if (!title) {
+        newErrors.title = 'Achievement Title is required';
       }
       
      if(!dateOfAchievement) {
@@ -122,7 +122,7 @@ const AchievementForm = (props) => {
     const formData = new FormData();
     formData.append('studentName', studentName);
     formData.append('category', category);
-    formData.append('achievementTitle', achievementTitle);
+    formData.append('title', title);
     formData.append('dateOfAchievement', dateOfAchievement);
     formData.append('givenBy', givenBy);
     formData.append('dateOfPosting', dateOfPosting);
@@ -192,10 +192,10 @@ const AchievementForm = (props) => {
                 <FormControl className={classes.field}>
                     <TextField
                         label="Achievement Title"
-                        value={achievementTitle}
-                        onChange={(e) => setAchievementTitle(e.target.value)}
-                        error={!!errors.achievementTitle}
-                        helperText={errors.achievementTitle}
+                        value={title}
+                        onChange={(e) => settitle(e.target.value)}
+                        error={!!errors.title}
+                        helperText={errors.title}
                     />
                 </FormControl>
                 <FormControl className={classes.field}>
@@ -250,7 +250,6 @@ const AchievementForm = (props) => {
                      type="file"
                      accept="image/*"
                      onChange={(e) => setImageAttachment(e.target.files[0])}
-                     value ={imageAttachment}
                      error={!!errors.imageAttachment}
                      helperText={errors.imageAttachment}
                  />
