@@ -13,7 +13,7 @@ import {
     usePageControl,
     
 } from '@ellucian/experience-extension-utils';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const EditForm = (props) => {
   const {classes, achievement, handleEditDialogClose } = props;
@@ -28,7 +28,7 @@ const EditForm = (props) => {
   const [briefDescription, setBriefDescription] = useState(achievement.briefDescription);
   const [imageUrl, setimageUrl] = useState(achievement.imageUrl);
   const [linkToWebsite, setLinkToWebsite] = useState(achievement.linkToWebsite);
-  const history = useHistory();
+  // const history = useHistory();
   const [errors, setErrors] = useState({
     studentName: '',
     category: '',
@@ -141,7 +141,7 @@ const handleSave = async () => {
 
   const handleCancel = () => {
     // Navigate to AchievementList on cancel
-    history.push('/');
+    handleEditDialogClose();
 
   };
 
