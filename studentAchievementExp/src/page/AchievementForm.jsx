@@ -57,9 +57,8 @@ const AchievementForm = (props) => {
         linkToWebsite,
         
     });
-    
-    
-   // Setting page title
+
+    // Setting page title
     setPageTitle('Student Achievement Form');
 
     const validateName = (name) => {
@@ -125,7 +124,7 @@ const AchievementForm = (props) => {
     formData.append('title', title);
     formData.append('dateOfAchievement', dateOfAchievement);
     formData.append('givenBy', givenBy);
-    formData.append('dateOfPosting', dateOfPosting);
+    formData.append('dateOfPosting',dateOfPosting);
     formData.append('briefDescription', briefDescription);
     formData.append('image', imageAttachment); // Append the image file url
     formData.append('linkToWebsite', linkToWebsite);

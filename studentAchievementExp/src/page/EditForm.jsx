@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   FormControl,
@@ -13,7 +13,6 @@ import {
     usePageControl,
     
 } from '@ellucian/experience-extension-utils';
-// import { useHistory } from 'react-router-dom';
 
 const EditForm = (props) => {
   const {classes, achievement, handleEditDialogClose } = props;
@@ -42,6 +41,28 @@ const EditForm = (props) => {
     
 });
 
+// Format ISO date to dd/mm/yyyy
+const formatDate = (isoDate) => {
+  console.log(isoDate);
+  const dateObject = new Date(isoDate);
+  const year = dateObject.getFullYear();
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+
+useEffect(() => {
+  // When the component mounts, format the dates and set them in the state
+  if (achievement.dateOfAchievement && achievement.dateOfPosting) {
+    const formattedDateOfAchievement = formatDate(achievement.dateOfAchievement.$date);
+    const formattedDateOfPosting = formatDate(achievement.dateOfPosting.$date);
+    setDateOfAchievement(formattedDateOfAchievement);
+    setDateOfPosting(formattedDateOfPosting);
+  }
+}, [achievement.dateOfAchievement, achievement.dateOfPosting]);
+
+  
 // Setting page title
 setPageTitle('Update Achievement Form');
 
@@ -108,9 +129,9 @@ const handleSave = async () => {
     formData.append('studentName', studentName);
     formData.append('category', category);
     formData.append('title', title);
-    formData.append('dateOfAchievement', dateOfAchievement);
+    formData.append('dateOfAchievement', formatDate(dateOfAchievement));
     formData.append('givenBy', givenBy);
-    formData.append('dateOfPosting', dateOfPosting);
+    formData.append('dateOfPosting', formatDate(dateOfPosting));
     formData.append('briefDescription', briefDescription);
     formData.append('image', imageUrl); // Append the image file
     formData.append('linkToWebsite', linkToWebsite);
@@ -188,7 +209,7 @@ const handleSave = async () => {
                 <TextField
                         label="Date of Achievement"
                         type="date"
-                        value={dateOfAchievement}
+                        value={formatDate(achievement.dateOfAchievement)}
                         onChange={(e) => setDateOfAchievement(e.target.value)}
                         InputLabelProps={{
                             shrink: true,
@@ -211,7 +232,7 @@ const handleSave = async () => {
                 <TextField
                         label="Date of Posting"
                         type="date"
-                        value={dateOfPosting}
+                        value={formatDate(achievement.dateOfPosting)}
                         onChange={(e) => setDateOfPosting(e.target.value)}
                         InputLabelProps={{
                             shrink: true,
