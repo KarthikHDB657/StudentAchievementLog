@@ -1,4 +1,6 @@
 import React, {useState, useContext,useEffect } from 'react';
+import { withStyles } from '@ellucian/react-design-system/core/styles';
+import { spacing20 } from '@ellucian/react-design-system/core/styles/tokens';
 import PropTypes from 'prop-types';
 import {
   FormControl,
@@ -6,28 +8,36 @@ import {
   Dropdown,
   TextField,
   Button,
+  
 } from '@ellucian/react-design-system/core';
-import axios from 'axios';
 import { AchievementContext } from '../context/achievementContext';
-import {
-    usePageControl,
-    
-} from '@ellucian/experience-extension-utils';
+import moment from 'moment';
+
+const styles = (theme) => ({
+  card: {
+      margin: `0 ${spacing20}`,
+  },
+  field: {
+      marginBottom: theme.spacing(2),
+  },
+  button: {
+     marginRight:'8px',
+  }
+  
+});
 
 const EditForm = (props) => {
   const {classes, achievement, handleEditDialogClose } = props;
-  const { updateAchievement } = useContext(AchievementContext);
-  const { setPageTitle } = usePageControl();
+  const { updateAchievement, } = useContext(AchievementContext); 
   const [studentName, setStudentName] = useState(achievement.studentName);
   const [category, setCategory] = useState(achievement.category);
   const [title, settitle] = useState(achievement.title);
-  const [dateOfAchievement, setDateOfAchievement] = useState(achievement.dateOfAchievement);
+  const [dateOfAchievement, setDateOfAchievement] = useState(achievement.dateOfAchievement.$date);
   const [givenBy, setGivenBy] = useState(achievement.givenBy);
-  const [dateOfPosting, setDateOfPosting] = useState(achievement.dateOfPosting);
+  const [dateOfPosting, setDateOfPosting] = useState(achievement.dateOfPosting.$date);
   const [briefDescription, setBriefDescription] = useState(achievement.briefDescription);
   const [imageUrl, setimageUrl] = useState(achievement.imageUrl);
   const [linkToWebsite, setLinkToWebsite] = useState(achievement.linkToWebsite);
-  // const history = useHistory();
   const [errors, setErrors] = useState({
     studentName: '',
     category: '',
@@ -41,43 +51,52 @@ const EditForm = (props) => {
     
 });
 
-// Format ISO date to dd/mm/yyyy
+const categories = [
+  'Paper submission',
+  'Conference',
+  'Awards',
+  'Appreciation note received',
+];
+
+// Update dateOfAchievement state when the date picker value changes
+const handleDateOfAchievementChange = (e) => {
+  const newDate = e.target.value;
+  console.log(newDate);
+  setDateOfAchievement(newDate);
+};
+
+// // Update dateOfPosting state when the date picker value changes
+const handleDateOfPostingChange = (e) => {
+  const newDate = e.target.value;
+  console.log(newDate);
+  setDateOfPosting(newDate);
+};
+
+//using moments to convert the incoming iso dates to current date
 const formatDate = (isoDate) => {
-  console.log(isoDate);
-  const dateObject = new Date(isoDate);
-  const year = dateObject.getFullYear();
-  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-  const day = dateObject.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return moment(isoDate).format('YYYY-MM-DD');
 };
 
 
 useEffect(() => {
   // When the component mounts, format the dates and set them in the state
   if (achievement.dateOfAchievement && achievement.dateOfPosting) {
-    const formattedDateOfAchievement = formatDate(achievement.dateOfAchievement.$date);
-    const formattedDateOfPosting = formatDate(achievement.dateOfPosting.$date);
+    const formattedDateOfAchievement = formatDate(achievement.dateOfAchievement);
+    const formattedDateOfPosting = formatDate(achievement.dateOfPosting);
     setDateOfAchievement(formattedDateOfAchievement);
     setDateOfPosting(formattedDateOfPosting);
   }
 }, [achievement.dateOfAchievement, achievement.dateOfPosting]);
 
-  
-// Setting page title
-setPageTitle('Update Achievement Form');
-
 const validateName = (name) => {
-    const regex = /^[a-zA-Z]+$/;
+    const regex = /^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/;
     return regex.test(name);
-  };
-console.log(imageUrl);
-console.log(achievement.imageUrl);
+};
 
 const handleSave = async () => {
     // Initialize error object
     const newErrors = {};
-    console.log(imageUrl);
-    
+    //Error validations for form fields
     if (!validateName(studentName)) {
         newErrors.studentName = 'Invalid Student name format';
     }
@@ -103,7 +122,8 @@ const handleSave = async () => {
     if(!briefDescription){
        newErrors.briefDescription = 'brief description is required';
     }
-    else if(briefDescription.length > 500) {
+    
+    if(briefDescription.length > 500) {
         newErrors.briefDescription = 'Brief description cannot be more than 500 characters';
     }
     
@@ -129,45 +149,25 @@ const handleSave = async () => {
     formData.append('studentName', studentName);
     formData.append('category', category);
     formData.append('title', title);
-    formData.append('dateOfAchievement', formatDate(dateOfAchievement));
+    formData.append('dateOfAchievement', dateOfAchievement);
     formData.append('givenBy', givenBy);
-    formData.append('dateOfPosting', formatDate(dateOfPosting));
+    formData.append('dateOfPosting', dateOfPosting);
     formData.append('briefDescription', briefDescription);
     formData.append('image', imageUrl); // Append the image file
     formData.append('linkToWebsite', linkToWebsite);
+    updateAchievement(achievement._id,formData);
+    handleEditDialogClose();
+ };
 
-    try {
-      
-      const response = await axios.put(
-        `http://localhost:5000/api/achievements/${achievement._id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      if (response.status === 200) {
-
-        updateAchievement(response.data);
-        console.log(response.data);
-        handleEditDialogClose();
-      } else {
-        console.error('Failed to update achievement');
-      }
-    } catch (error) {
-      console.error('Error updating achievement:', error);
-    }
-  };
-
-  const handleCancel = () => {
+ //onclick of cancel close the edit dialog
+const handleCancel = () => {
     // Navigate to AchievementList on cancel
     handleEditDialogClose();
+};
 
-  };
-
-  return (
-    <div>
+//ui part
+return (
+    <div className={classes.card}>
       <form>
            <FormControl className={classes.field}>
                     <TextField
@@ -187,14 +187,21 @@ const handleSave = async () => {
                         label="Category"
                         onChange={(e) => setCategory(e.target.value)}
                         value={category}
-                 >
-                 <DropdownItem label="certification" value="Certification" />
-                 <DropdownItem label="paper submission" value="Paper submission" />
-                 <DropdownItem label="conference" value="Conference" />
-                 <DropdownItem label="awards" value="Awards" />
-                 <DropdownItem label="appreciation note received" value="Appreciation note received" />
+                        error={!!errors.category}
+                    >
+                        <DropdownItem default label="certification" value="Certification" />
+                        {categories.map(option => {
+                        return (
+                            <DropdownItem
+                                key={option}
+                                label={option}
+                                value={option}
+                            />
+                        );
+                    })}
+                    
                        
-                </Dropdown>
+                  </Dropdown>
             </FormControl>
             <FormControl className={classes.field}>
               <TextField
@@ -206,17 +213,17 @@ const handleSave = async () => {
                />
             </FormControl>
             <FormControl className={classes.field}>
-                <TextField
+              <TextField
                         label="Date of Achievement"
                         type="date"
-                        value={formatDate(achievement.dateOfAchievement)}
-                        onChange={(e) => setDateOfAchievement(e.target.value)}
+                        value={formatDate(dateOfAchievement)}
+                        onChange={handleDateOfAchievementChange}
                         InputLabelProps={{
                             shrink: true,
                         }}
                         error={!!errors.dateOfAchievement}
                         helperText={errors.dateOfAchievement}
-                />
+                    />
             </FormControl>
             <FormControl className={classes.field}>
                 <TextField
@@ -229,17 +236,17 @@ const handleSave = async () => {
                 />
             </FormControl>
             <FormControl className={classes.field}>
-                <TextField
+               <TextField
                         label="Date of Posting"
                         type="date"
-                        value={formatDate(achievement.dateOfPosting)}
-                        onChange={(e) => setDateOfPosting(e.target.value)}
+                        value={formatDate(dateOfPosting)}
+                        onChange={handleDateOfPostingChange}
                         InputLabelProps={{
                             shrink: true,
                         }}
                         error={!!errors.dateOfPosting}
                         helperText={errors.dateOfPosting}
-                />
+                    />
             </FormControl>
             <FormControl className={classes.field}>
                     <TextField
@@ -256,7 +263,6 @@ const handleSave = async () => {
                 <TextField
                      type="file"
                      accept="image/*"
-                    //  value = {imageUrl}
                      onChange={(e) => setimageUrl(e.target.files[0])}
                      error={!!errors.imageUrl}
                      helperText={errors.imageUrl}
@@ -274,6 +280,7 @@ const handleSave = async () => {
                type="button"
                variant="contained"
                color="primary"
+               className={classes.button}
                onClick={handleSave}
               >
               Save
@@ -284,7 +291,7 @@ const handleSave = async () => {
                 className={classes.button}
                 onClick={handleCancel}
              >
-                Cancel
+             Cancel
              </Button>
          </FormControl>
       </form>
@@ -298,4 +305,4 @@ EditForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default EditForm;
+export default withStyles(styles)(EditForm);

@@ -2,6 +2,22 @@ import React from 'react';
 import { Card, CardContent, CardActions, CardHeader, IconButton, CardMedia } from '@ellucian/react-design-system/core';
 import { Icon } from '@ellucian/ds-icons/lib';
 import PropTypes from 'prop-types';
+import { withStyles } from '@ellucian/react-design-system/core/styles';
+
+const styles = () => ({
+media: {
+  // Add these styles to adjust image size
+  maxWidth: '100%',
+  height: 'auto',
+  display: 'block', 
+  margin: 'auto'
+},
+mediaContainer: {
+  display: 'flex',
+  justifyContent: 'center', // Center horizontally
+  alignItems: 'center', // Center vertically
+},
+});
 
 const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, classes }) => {
   return (
@@ -19,13 +35,16 @@ const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, clas
           </CardActions>
         }
       />
+      <div className={classes.mediaContainer}>
       <CardMedia
         component="img"
         alt={achievement.achievementTitle}
         height="140"
         image={`http://localhost:5000/${achievement.imageUrl}`} // Update the URL for the image
-        style={{ display: 'block', margin: 'auto' }}// Update the URL for the image
+        // style={{ display: 'block', margin: 'auto' }}// Update the URL for the image
+        className={classes.media}
       />
+      </div>
       <CardContent>
         <h2>{achievement.achievementTitle}</h2>
         <p>Student: {achievement.studentName}</p>
@@ -42,5 +61,5 @@ AchievementCard.propTypes = {
   handleDeleteClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
+export default withStyles(styles)(AchievementCard);
 
-export default AchievementCard;

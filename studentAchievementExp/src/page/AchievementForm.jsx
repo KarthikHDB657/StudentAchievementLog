@@ -15,7 +15,6 @@ import {
 import React, { useState, useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import { AchievementContext } from '../context/achievementContext';
-import axios from 'axios';
 
 const styles = (theme) => ({
     card: {
@@ -25,8 +24,9 @@ const styles = (theme) => ({
         marginBottom: theme.spacing(2),
     },
     button: {
-        marginTop: theme.spacing(2),
-    },
+        marginRight:'8px',
+    }
+    
 });
 
 const AchievementForm = (props) => {
@@ -36,10 +36,10 @@ const AchievementForm = (props) => {
     const history = useHistory();
     const [category, setCategory] = useState('');
     const [title, settitle] = useState('');
-    const [dateOfAchievement, setDateOfAchievement] = useState('');
+    const [dateOfAchievement, setDateOfAchievement] = useState(null);
     const [studentName,setStudentName] = useState('');
     const [givenBy, setGivenBy] = useState('');
-    const [dateOfPosting, setDateOfPosting] = useState('');
+    const [dateOfPosting, setDateOfPosting] = useState(null);
     const [briefDescription, setBriefDescription] = useState('');
     const [imageAttachment, setImageAttachment] = useState(null);
     const [linkToWebsite, setLinkToWebsite] = useState('');
@@ -58,13 +58,20 @@ const AchievementForm = (props) => {
         
     });
 
+    const categories = [
+        'Paper submission',
+        'Conference',
+        'Awards',
+        'Appreciation note received',
+    ];
+
     // Setting page title
     setPageTitle('Student Achievement Form');
 
     const validateName = (name) => {
-        const regex = /^[a-zA-Z]+$/;
+        const regex = /^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/;
         return regex.test(name);
-      };
+    };
 
     const handleAddAchievement = async () => {
         
@@ -73,44 +80,42 @@ const AchievementForm = (props) => {
 
        if (!validateName(studentName)) {
          newErrors.studentName = 'Invalid Student name format';
-      }
-      if (!title) {
+       }
+       if (!category) {
+        newErrors.category = 'Please select a valid category';
+       }
+       if (!title) {
         newErrors.title = 'Achievement Title is required';
-      }
-      
-     if(!dateOfAchievement) {
+       }
+       if(!dateOfAchievement) {
         newErrors.dateOfAchievement = 'Date of Achievement is required';
-     }
-     if(!dateOfPosting) {
-        newErrors.dateOfAchievement = 'Date of Posting is required';
-     }
-     
-     if (dateOfAchievement > dateOfPosting) {
+       }
+       if(!dateOfPosting) {
+        newErrors.dateOfPosting = 'Date of Posting is required';
+       }
+       if (dateOfAchievement > dateOfPosting) {
          newErrors.dateOfPosting = 'Date of Achievement cannot be greater than Date of Posting';
-     }
-
-     if(!givenBy) {
-        newErrors.givenBy = 'Date of Posting is required';
-     }
-
-     if(!briefDescription){
+       }
+       if(!givenBy) {
+        newErrors.givenBy = 'given by is required';
+       }
+       if(!briefDescription){
         newErrors.briefDescription = 'brief description is required';
-     }
-     else if(briefDescription.length > 500) {
+       }
+       if(briefDescription.length > 500) {
          newErrors.briefDescription = 'Brief description cannot be more than 500 characters';
-     }
-     
-     // Validation for imageAttachment
-     if (!imageAttachment){
+       }
+       // Validation for imageAttachment
+       if (!imageAttachment){
         newErrors.imageAttachment = 'Certificate image is required';
-     }else if (imageAttachment) {
+      }else if (imageAttachment) {
         if (!['image/jpeg', 'image/png'].includes(imageAttachment.type)) {
             newErrors.imageAttachment = 'Only JPEG and PNG images are allowed';
         }
         if (imageAttachment.size > 500 * 1024) {
             newErrors.imageAttachment = 'Image size must be less than 500KB';
         }
-    }
+     }
 
     // If there are errors, set them and return
     if (Object.keys(newErrors).length > 0) {
@@ -128,30 +133,10 @@ const AchievementForm = (props) => {
     formData.append('briefDescription', briefDescription);
     formData.append('image', imageAttachment); // Append the image file url
     formData.append('linkToWebsite', linkToWebsite);
-    try {
-            // Make the POST request with FormData
-            const response = await axios.post('http://localhost:5000/api/achievements', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data', // Important!
-                },
-            });
+    addAchievement(formData);
+    history.push('/');
+};
     
-            // Check the response and perform any actions needed
-            if (response.status === 201) {
-                // Achievement added successfully, you can navigate to another page
-                addAchievement(response.data);
-                history.push('/');
-            } else {
-                // Handle error scenario
-                console.error('Failed to add achievement');
-            }
-        } catch (error) {
-            // Handle any errors that occurred during the POST request
-            console.error('Error adding achievement:', error);
-        }
-        
-    };
-
     const handleCancel = () => {
         // Navigate to AchievementList on cancel
         history.push('/');
@@ -179,14 +164,24 @@ const AchievementForm = (props) => {
                         label="Category"
                         onChange={(e) => setCategory(e.target.value)}
                         value={category}
+                        error={!!errors.category}
+                        helperText={errors.category}
+                        required
                     >
+                        <DropdownItem disabled label="Select a category" value="" />
                         <DropdownItem label="certification" value="Certification" />
-                        <DropdownItem label="paper submission" value="Paper submission" />
-                        <DropdownItem label="conference" value="Conference" />
-                        <DropdownItem label="awards" value="Awards" />
-                        <DropdownItem label="appreciation note received" value="Appreciation note received" />
+                        {categories.map(option => {
+                        return (
+                            <DropdownItem
+                                key={option}
+                                label={option}
+                                value={option}
+                            />
+                        );
+                    })}
                        
                     </Dropdown>
+                    
                 </FormControl>
                 <FormControl className={classes.field}>
                     <TextField
@@ -198,7 +193,7 @@ const AchievementForm = (props) => {
                     />
                 </FormControl>
                 <FormControl className={classes.field}>
-                    <TextField
+                 <TextField
                         label="Date of Achievement"
                         type="date"
                         value={dateOfAchievement}
@@ -209,6 +204,7 @@ const AchievementForm = (props) => {
                         error={!!errors.dateOfAchievement}
                         helperText={errors.dateOfAchievement}
                     />
+                    
                 </FormControl>
                 <FormControl className={classes.field}>
                     <TextField
@@ -221,7 +217,7 @@ const AchievementForm = (props) => {
                     />
                 </FormControl>
                 <FormControl className={classes.field}>
-                    <TextField
+                <TextField
                         label="Date of Posting"
                         type="date"
                         value={dateOfPosting}
@@ -232,6 +228,7 @@ const AchievementForm = (props) => {
                         error={!!errors.dateOfPosting}
                         helperText={errors.dateOfPosting}
                     />
+                    
                 </FormControl>
                 <FormControl className={classes.field}>
                     <TextField
@@ -285,7 +282,6 @@ const AchievementForm = (props) => {
 
 AchievementForm.propTypes = {
     classes: PropTypes.object.isRequired,
-    handleEditDialogClose:PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(AchievementForm);
