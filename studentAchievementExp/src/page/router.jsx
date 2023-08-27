@@ -14,18 +14,18 @@ import { AchievementProvider } from '../context/achievementContext';
 const RouterPage = (props) => {
     return (
         <AchievementProvider>
-        <Router basename={props.pageInfo.basePath}>
-            <Switch>
-                <Route exact path='/'>
-                    <AchievementList {...props} />
-                </Route>
-            </Switch>
-            <Switch>
-                <Route path ='/add-achievement'>
-                    <AchievementForm {...props}/>
-                </Route>
-            </Switch>
-        </Router>
+            <Router basename={props.pageInfo.basePath}>
+                <Switch>
+                    <Route exact path='/'>
+                        <AchievementList {...props} />
+                    </Route>
+                </Switch>
+                <Switch>
+                    <Route path='/add-achievement'>
+                        <AchievementForm {...props} />
+                    </Route>
+                </Switch>
+            </Router>
         </AchievementProvider>
     );
 };

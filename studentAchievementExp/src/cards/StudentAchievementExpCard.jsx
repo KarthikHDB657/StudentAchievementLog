@@ -14,9 +14,9 @@ const styles = () => ({
 });
 
 const StudentAchievementExpCard = (props) => {
-    const { classes,cardControl:{navigateToPage} } = props;
+    const { classes, cardControl: { navigateToPage } } = props;
     const handleNavigate = () => {
-        navigateToPage({route:'/'});
+        navigateToPage({ route: '/' });
     };
 
     return (
@@ -25,7 +25,7 @@ const StudentAchievementExpCard = (props) => {
                 Student Achievement Log
             </Typography>
             <Typography>
-             <Button onClick = {handleNavigate}>Move to page</Button>
+                <Button onClick={handleNavigate}>Move to page</Button>
             </Typography>
         </div>
     );
@@ -33,7 +33,7 @@ const StudentAchievementExpCard = (props) => {
 
 StudentAchievementExpCard.propTypes = {
     classes: PropTypes.object.isRequired,
-    cardControl:PropTypes.object
+    cardControl: PropTypes.object
 };
 
 export default withStyles(styles)(StudentAchievementExpCard);

@@ -1,24 +1,11 @@
-import React, {useEffect,createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios'; 
+import axios from 'axios';
 
 export const AchievementContext = createContext();
 
 export const AchievementProvider = ({ children }) => {
   const [achievements, setAchievements] = useState([]);
-
-  useEffect(() => {
-    // Fetch data from the server and update the state
-    axios.get('http://localhost:5000/api/achievements')
-      .then(response => {
-        setAchievements(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching achievements:', error);
-      });
-  }, []); // The empty dependency array ensures this effect runs only once
-
-  //this helps for fetching all the records
   const refreshAchievements = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/achievements');
@@ -33,10 +20,10 @@ export const AchievementProvider = ({ children }) => {
   const addAchievement = async (newAchievement) => {
     try {
       // Make the POST request to add the achievement
-      const response = await axios.post('http://localhost:5000/api/achievements', newAchievement,{
+      const response = await axios.post('http://localhost:5000/api/achievements', newAchievement, {
         headers: {
-                  'Content-Type': 'multipart/form-data', // Important!
-          },
+          'Content-Type': 'multipart/form-data', // Important!
+        },
       });
 
       if (response.status === 201) {
@@ -51,8 +38,8 @@ export const AchievementProvider = ({ children }) => {
       console.error('Error adding achievement:', error);
     }
   };
- 
-   //helps in delete the achievement
+
+  //helps in delete the achievement
   const deleteAchievement = async (achievementId) => {
     try {
       //deleting the id 
@@ -66,7 +53,7 @@ export const AchievementProvider = ({ children }) => {
   };
 
   //helps in updating the achievement
-  const updateAchievement = async (achievementId,updatedAchievement) => {
+  const updateAchievement = async (achievementId, updatedAchievement) => {
     try {
       const response = await axios.put(
         `http://localhost:5000/api/achievements/${achievementId}`,
@@ -85,7 +72,7 @@ export const AchievementProvider = ({ children }) => {
           )
         );
         console.log('Successfully updated achievement');
-        
+
       } else {
         console.error('Failed to update achievement');
       }
@@ -93,12 +80,12 @@ export const AchievementProvider = ({ children }) => {
       console.error('Error updating achievement:', error);
     }
   };
-  
-  
+
+
 
   return (
     <AchievementContext.Provider
-      value={{ achievements, addAchievement, deleteAchievement, updateAchievement,refreshAchievements }}
+      value={{ achievements, addAchievement, deleteAchievement, updateAchievement, refreshAchievements }}
     >
       {children}
     </AchievementContext.Provider>

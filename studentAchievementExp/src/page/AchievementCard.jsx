@@ -5,18 +5,19 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@ellucian/react-design-system/core/styles';
 
 const styles = () => ({
-media: {
-  // Add these styles to adjust image size
-  maxWidth: '100%',
-  height: 'auto',
-  display: 'block', 
-  margin: 'auto'
-},
-mediaContainer: {
-  display: 'flex',
-  justifyContent: 'center', // Center horizontally
-  alignItems: 'center', // Center vertically
-},
+  media: {
+    // Add these styles to adjust image size
+    maxWidth: '100%',
+    // height: 'auto',
+    objectfit: 'cover',
+    display: 'block',
+    margin: 'auto'
+  },
+  mediaContainer: {
+    display: 'flex',
+    justifyContent: 'center', // Center horizontally
+    alignItems: 'center', // Center vertically
+  },
 });
 
 const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, classes }) => {
@@ -36,14 +37,14 @@ const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, clas
         }
       />
       <div className={classes.mediaContainer}>
-      <CardMedia
-        component="img"
-        alt={achievement.achievementTitle}
-        height="140"
-        image={`http://localhost:5000/${achievement.imageUrl}`} // Update the URL for the image
-        // style={{ display: 'block', margin: 'auto' }}// Update the URL for the image
-        className={classes.media}
-      />
+        <CardMedia
+          component="img"
+          alt={achievement.achievementTitle}
+          height="140"
+          image={`http://localhost:5000/${achievement.imageUrl}`} // Update the URL for the image
+          // style={{ display: 'block', margin: 'auto' }}// Update the URL for the image
+          className={classes.media}
+        />
       </div>
       <CardContent>
         <h2>{achievement.achievementTitle}</h2>
