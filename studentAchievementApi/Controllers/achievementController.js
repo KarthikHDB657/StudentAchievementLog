@@ -71,7 +71,25 @@ const updateAchievement = async (req, res) => {
       linkToWebsite,
     } = req.body;
 
-    const imageUrl = req.file ? req.file.path : '';
+    // const imageUrl = req.file ? req.file.path : '';
+    const existingAchievement = await Achievement.findById(req.params.id);
+    if (!existingAchievement) {
+      return res.status(404).json({ error: 'Achievement not found.' });
+    }
+
+    // Delete the old image file if it exists
+    if (existingAchievement.imageUrl) {
+      const oldImagePath = path.join(__dirname, '..', existingAchievement.imageUrl);
+      fs.unlinkSync(oldImagePath);
+    }
+
+    let updatedImageUrl = existingAchievement.imageUrl;
+
+    if (req.file) {
+      // If a new image file is uploaded, upload it and update imageUrl
+      const newImageUrl = req.file.path;
+      updatedImageUrl = newImageUrl;
+    }
 
     const updatedAchievement = {
       studentName,
@@ -81,7 +99,7 @@ const updateAchievement = async (req, res) => {
       givenBy,
       dateOfPosting,
       briefDescription,
-      imageUrl,
+      imageUrl: updatedImageUrl,
       linkToWebsite,
     };
 

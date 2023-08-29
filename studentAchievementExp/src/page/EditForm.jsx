@@ -130,7 +130,7 @@ const EditForm = (props) => {
 
     // Validation for imageUrl
     if (!imageUrl) {
-      newErrors.imageUrl = 'Certificate image is required';
+      newErrors.imageUrl = 'Please reupload the certification proof image';
     } else if (imageUrl) {
       if (!['image/jpeg', 'image/png'].includes(imageUrl.type)) {
         newErrors.imageUrl = 'Only JPEG and PNG images are allowed';

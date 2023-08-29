@@ -8,8 +8,10 @@ import { usePageControl } from '@ellucian/experience-extension-utils';
 import { useHistory } from 'react-router-dom';
 import { AchievementContext } from '../context/achievementContext';
 import AchievementCard from './AchievementCard';
-import { fountain600, spacing40,fontWeightBold } from '@ellucian/react-design-system/core/styles/tokens';
+import { fountain600, spacing40,fontWeightBold} from '@ellucian/react-design-system/core/styles/tokens';
 import EditForm from './EditForm';
+import ViewForm from './ViewForm'; // Import the ViewForm component
+
 
 const styles = () => ({
   card: {
@@ -63,6 +65,7 @@ const AchievementList = (props) => {
   const { setPageTitle } = usePageControl();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [selectedAchievement, setSelectedAchievement] = useState(null);
   const [searchInput, setSearchInput] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -116,6 +119,16 @@ const AchievementList = (props) => {
 
   const handleEditDialogClose = () => {
     setEditDialogOpen(false);
+
+  };
+
+  const handleViewDialogOpen = (achievement) => {
+    setSelectedAchievement(achievement);
+    setViewDialogOpen(true);
+  };
+
+  const handleViewDialogClose = () => {
+    setViewDialogOpen(false);
 
   };
 
@@ -288,6 +301,7 @@ const AchievementList = (props) => {
               achievement={achievement}
               handleDeleteClick={() => handleDeleteDialogOpen(achievement)}
               handleEditClick={() => handleEditDialogOpen(achievement)}
+              handleViewClick = {() => handleViewDialogOpen(achievement)}
               classes={classes}
             />
           ))}
@@ -346,6 +360,18 @@ const AchievementList = (props) => {
           <Button variant="contained" color="secondary" onClick={handleDeleteConfirm}>Delete</Button>
           <Button variant="contained" onClick={handleDeleteDialogClose}>Cancel</Button>
         </DialogActions>
+      </Dialog>
+      {/*View Dialog */}
+      <Dialog open={viewDialogOpen} onClose={handleViewDialogClose}>
+        <DialogTitle>View Achievement</DialogTitle>
+        <DialogContent>
+          {/* Use the EditForm component here */}
+          <ViewForm
+            classes={classes}
+            achievement={selectedAchievement}
+            handleViewDialogClose={handleViewDialogClose}
+          />
+        </DialogContent>
       </Dialog>
 
 

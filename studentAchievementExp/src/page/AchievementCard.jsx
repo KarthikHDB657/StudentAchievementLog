@@ -7,10 +7,10 @@ import { withStyles } from '@ellucian/react-design-system/core/styles';
 const styles = () => ({
   media: {
     // Add these styles to adjust image size
-    maxWidth: '100%',
+    // maxWidth: '100%',
     // height: 'auto',
-    objectfit: 'cover',
-    display: 'block',
+    objectfit: 'contain',
+    // display: 'block',
     margin: 'auto'
   },
   mediaContainer: {
@@ -20,7 +20,7 @@ const styles = () => ({
   },
 });
 
-const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, classes }) => {
+const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick,handleViewClick,classes }) => {
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -32,6 +32,9 @@ const AchievementCard = ({ achievement, handleEditClick, handleDeleteClick, clas
             </IconButton>
             <IconButton color="gray" aria-label="Delete" onClick={() => handleDeleteClick(achievement)}>
               <Icon name="archive" />
+            </IconButton>
+            <IconButton color="gray" aria-label="View" onClick={() => handleViewClick(achievement)}>
+              <Icon name="info" />
             </IconButton>
           </CardActions>
         }
@@ -60,6 +63,7 @@ AchievementCard.propTypes = {
   achievement: PropTypes.object.isRequired,
   handleEditClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  handleViewClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(AchievementCard);
