@@ -7,12 +7,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  
+
 } from '@ellucian/react-design-system/core';
 import { withStyles } from '@ellucian/react-design-system/core/styles';
 
 const styles = () => ({
-  
+
   viewFormContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -49,55 +49,59 @@ const styles = () => ({
 
 
 const ViewForm = ({ classes, achievement, handleViewDialogClose }) => {
-    return (
-      <div className={classes.viewFormContainer}>
-        <Typography variant="h6" className={classes.sectionHeaders}>
-          Achievement Details
-        </Typography>
-        <Table className={classes.detailsTable}>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan="2" className={classes.imageCell}>
-                <img src={`http://localhost:5000/${achievement.imageUrl}`} alt={achievement.title} className={classes.fullImage} />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell><strong>Student Name:</strong></TableCell>
-              <TableCell>{achievement.studentName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell><strong>Category:</strong></TableCell>
-              <TableCell>{achievement.category}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell><strong>Title:</strong></TableCell>
-              <TableCell>{achievement.title}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell><strong>Date of Achievement:</strong></TableCell>
-              <TableCell>{achievement.dateOfAchievement}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell><strong>Date of Posting:</strong></TableCell>
-              <TableCell>{achievement.dateOfPosting}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <div className={classes.closeButtonContainer}>
-          <Button variant="contained" onClick={handleViewDialogClose}>
-            Close
-          </Button>
-        </div>
+  return (
+    <div className={classes.viewFormContainer}>
+      <Typography variant="h6" className={classes.sectionHeaders}>
+        Achievement Details
+      </Typography>
+      <Table className={classes.detailsTable}>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan="2" className={classes.imageCell}>
+              <img src={`http://localhost:5000/${achievement.imageUrl}`} alt={achievement.title} className={classes.fullImage} />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Student Name:</strong></TableCell>
+            <TableCell>{achievement.studentName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Category:</strong></TableCell>
+            <TableCell>{achievement.category}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Title:</strong></TableCell>
+            <TableCell>{achievement.title}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Brief of Achievement:</strong></TableCell>
+            <TableCell>{achievement.briefDescription}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Date of Achievement:</strong></TableCell>
+            <TableCell>{achievement.dateOfAchievement}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Date of Posting:</strong></TableCell>
+            <TableCell>{achievement.dateOfPosting}</TableCell>
+          </TableRow>
+
+        </TableBody>
+      </Table>
+      <div className={classes.closeButtonContainer}>
+        <Button variant="contained" onClick={handleViewDialogClose}>
+          Close
+        </Button>
       </div>
-    );
-  };
-  
-  
-  ViewForm.propTypes = {
-    classes: PropTypes.object.isRequired,
-    achievement: PropTypes.object.isRequired,
-    handleViewDialogClose: PropTypes.func.isRequired,
-  };
-  
-  export default withStyles(styles)(ViewForm);
-  
+    </div>
+  );
+};
+
+
+ViewForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+  achievement: PropTypes.object.isRequired,
+  handleViewDialogClose: PropTypes.func.isRequired,
+};
+
+export default withStyles(styles)(ViewForm);
