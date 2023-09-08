@@ -36,7 +36,7 @@ const EditForm = (props) => {
   const [givenBy, setGivenBy] = useState(achievement.givenBy);
   const [dateOfPosting, setDateOfPosting] = useState(achievement.dateOfPosting.$date);
   const [briefDescription, setBriefDescription] = useState(achievement.briefDescription);
-  const [imageUrl, setimageUrl] = useState(achievement.imageUrl);
+  const [imageUrl, setimageUrl] = useState(null);
   const [linkToWebsite, setLinkToWebsite] = useState(achievement.linkToWebsite);
   const [errors, setErrors] = useState({
     studentName: '',
@@ -47,7 +47,7 @@ const EditForm = (props) => {
     dateOfPosting: '',
     briefDescription: '',
     imageUrl,
-    linkToWebsite,
+    linkToWebsite:'',
 
   });
 
@@ -62,14 +62,12 @@ const EditForm = (props) => {
   // Update dateOfAchievement state when the date picker value changes
   const handleDateOfAchievementChange = (e) => {
     const newDate = e.target.value;
-    console.log(newDate);
     setDateOfAchievement(newDate);
   };
 
   //Update dateOfPosting state when the date picker value changes
   const handleDateOfPostingChange = (e) => {
     const newDate = e.target.value;
-    console.log(newDate);
     setDateOfPosting(newDate);
   };
 
@@ -128,9 +126,13 @@ const EditForm = (props) => {
       newErrors.briefDescription = 'Brief description cannot be more than 500 characters';
     }
 
+    if (!linkToWebsite) {
+      newErrors.linkToWebsite = 'Link is required';
+    }
+
     // Validation for imageUrl
     if (!imageUrl) {
-      newErrors.imageUrl = 'Please reupload the certification proof image';
+      newErrors.imageUrl = 'Certificate image is required, Please reupload';
     } else if (imageUrl) {
       if (!['image/jpeg', 'image/png'].includes(imageUrl.type)) {
         newErrors.imageUrl = 'Only JPEG and PNG images are allowed';
@@ -139,6 +141,8 @@ const EditForm = (props) => {
         newErrors.imageUrl = 'Image size must be less than 500KB';
       }
     }
+
+
 
     // If there are errors, set them and return
     if (Object.keys(newErrors).length > 0) {
@@ -271,9 +275,12 @@ const EditForm = (props) => {
         </FormControl>
         <FormControl className={classes.field}>
           <TextField
-            label="Link to Website (optional)"
+            label="Link to Website "
+            type="Link"
             value={linkToWebsite}
             onChange={(e) => setLinkToWebsite(e.target.value)}
+            error={!!errors.linkToWebsite}
+            helperText={errors.linkToWebsite}
           />
         </FormControl>
         <FormControl>

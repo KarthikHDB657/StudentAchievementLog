@@ -117,6 +117,10 @@ const AchievementForm = (props) => {
             }
         }
 
+        if (!linkToWebsite){
+            newErrors.linkToWebsite = 'Link is required';
+        }
+
         // If there are errors, set them and return
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -255,6 +259,8 @@ const AchievementForm = (props) => {
                         label="Link to Website (optional)"
                         value={linkToWebsite}
                         onChange={(e) => setLinkToWebsite(e.target.value)}
+                        error={!!errors.linkToWebsite}
+                        helperText={errors.linkToWebsite}
                     />
                 </FormControl>
                 <FormControl className={classes.field}>

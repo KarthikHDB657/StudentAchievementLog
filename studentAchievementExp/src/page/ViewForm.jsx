@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography,
   Button,
   Table,
   TableRow,
@@ -10,6 +9,7 @@ import {
 
 } from '@ellucian/react-design-system/core';
 import { withStyles } from '@ellucian/react-design-system/core/styles';
+import moment from 'moment';
 
 const styles = () => ({
 
@@ -47,13 +47,17 @@ const styles = () => ({
   },
 });
 
+//using moments to convert the incoming iso dates to current date
+const formatDate = (isoDate) => {
+  return moment(isoDate).format('DD-MM-YYYY');
+};
 
 const ViewForm = ({ classes, achievement, handleViewDialogClose }) => {
   return (
     <div className={classes.viewFormContainer}>
-      <Typography variant="h6" className={classes.sectionHeaders}>
+      {/* <Typography variant="h6" className={classes.sectionHeaders}>
         Achievement Details
-      </Typography>
+      </Typography> */}
       <Table className={classes.detailsTable}>
         <TableBody>
           <TableRow>
@@ -79,11 +83,11 @@ const ViewForm = ({ classes, achievement, handleViewDialogClose }) => {
           </TableRow>
           <TableRow>
             <TableCell><strong>Date of Achievement:</strong></TableCell>
-            <TableCell>{achievement.dateOfAchievement}</TableCell>
+            <TableCell>{formatDate(achievement.dateOfAchievement)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell><strong>Date of Posting:</strong></TableCell>
-            <TableCell>{achievement.dateOfPosting}</TableCell>
+            <TableCell>{formatDate(achievement.dateOfPosting)}</TableCell>
           </TableRow>
 
         </TableBody>
