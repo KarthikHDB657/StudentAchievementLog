@@ -6,6 +6,8 @@ import {
     Dropdown,
     TextField,
     Button,
+    Grid,
+    Paper
 } from '@ellucian/react-design-system/core';
 import PropTypes from 'prop-types';
 import {
@@ -24,8 +26,27 @@ const styles = (theme) => ({
         marginBottom: theme.spacing(2),
     },
     button: {
-        marginRight: '8px',
-    }
+        marginRight: '5px',
+    },
+    container: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '90vh', // Make the container full height
+    },
+    formContainer: {
+        padding: theme.spacing(10),
+        maxWidth: '5000px', // Adjust the maximum width as needed
+    },
+    achievementForm: {
+        backgroundImage: 'url("https://cdn.elluciancloud.com/assets/EDS2/7.6.0/img/bg/Banner-Background.png")',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+    },
 
 });
 
@@ -117,7 +138,7 @@ const AchievementForm = (props) => {
             }
         }
 
-        if (!linkToWebsite){
+        if (!linkToWebsite) {
             newErrors.linkToWebsite = 'Link is required';
         }
 
@@ -148,140 +169,152 @@ const AchievementForm = (props) => {
     };
 
     return (
-        <div className={classes.card}>
-            <form>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Student Name"
-                        value={studentName}
-                        onChange={(e) => setStudentName(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        error={!!errors.studentName}
-                        helperText={errors.studentName}
+        <div className={classes.achievementForm}>
+            <div className={classes.container}>
+                <Paper className={classes.formContainer}>
+                    {/* <Grid item xs={12}> */}
+                    <form>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Student Name"
+                                value={studentName}
+                                onChange={(e) => setStudentName(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                error={!!errors.studentName}
+                                helperText={errors.studentName}
 
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <Dropdown
-                        label="Category"
-                        onChange={(e) => setCategory(e.target.value)}
-                        value={category}
-                        error={!!errors.category}
-                        helperText={errors.category}
-                        required
-                    >
-                        <DropdownItem disabled label="Select a category" value="" />
-                        <DropdownItem label="certification" value="Certification" />
-                        {categories.map(option => {
-                            return (
-                                <DropdownItem
-                                    key={option}
-                                    label={option}
-                                    value={option}
-                                />
-                            );
-                        })}
+                            />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <Dropdown
+                                label="Category"
+                                onChange={(e) => setCategory(e.target.value)}
+                                value={category}
+                                error={!!errors.category}
+                                helperText={errors.category}
+                                required
+                            >
+                                <DropdownItem disabled label="Select a category" value="" />
+                                <DropdownItem label="certification" value="Certification" />
+                                {categories.map(option => {
+                                    return (
+                                        <DropdownItem
+                                            key={option}
+                                            label={option}
+                                            value={option}
+                                        />
+                                    );
+                                })}
 
-                    </Dropdown>
+                            </Dropdown>
 
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Achievement Title"
-                        value={title}
-                        onChange={(e) => settitle(e.target.value)}
-                        error={!!errors.title}
-                        helperText={errors.title}
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Date of Achievement"
-                        type="date"
-                        value={dateOfAchievement}
-                        onChange={(e) => setDateOfAchievement(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        error={!!errors.dateOfAchievement}
-                        helperText={errors.dateOfAchievement}
-                    />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Achievement Title"
+                                value={title}
+                                onChange={(e) => settitle(e.target.value)}
+                                error={!!errors.title}
+                                helperText={errors.title}
+                            />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Date of Achievement"
+                                type="date"
+                                value={dateOfAchievement}
+                                onChange={(e) => setDateOfAchievement(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                error={!!errors.dateOfAchievement}
+                                helperText={errors.dateOfAchievement}
+                            />
 
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Given by"
-                        value={givenBy}
-                        onChange={(e) => setGivenBy(e.target.value)}
-                        error={!!errors.givenBy}
-                        helperText={errors.givenBy}
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Given by"
+                                value={givenBy}
+                                onChange={(e) => setGivenBy(e.target.value)}
+                                error={!!errors.givenBy}
+                                helperText={errors.givenBy}
 
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Date of Posting"
-                        type="date"
-                        value={dateOfPosting}
-                        onChange={(e) => setDateOfPosting(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        error={!!errors.dateOfPosting}
-                        helperText={errors.dateOfPosting}
-                    />
+                            />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Date of Posting"
+                                type="date"
+                                value={dateOfPosting}
+                                onChange={(e) => setDateOfPosting(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                error={!!errors.dateOfPosting}
+                                helperText={errors.dateOfPosting}
+                            />
 
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Brief about achievement"
-                        multiline
-                        rows={4}
-                        value={briefDescription}
-                        onChange={(e) => setBriefDescription(e.target.value)}
-                        error={!!errors.briefDescription}
-                        helperText={errors.briefDescription}
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setImageAttachment(e.target.files[0])}
-                        error={!!errors.imageAttachment}
-                        helperText={errors.imageAttachment}
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <TextField
-                        label="Link to Website (optional)"
-                        value={linkToWebsite}
-                        onChange={(e) => setLinkToWebsite(e.target.value)}
-                        error={!!errors.linkToWebsite}
-                        helperText={errors.linkToWebsite}
-                    />
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={handleAddAchievement}
-                    >Add
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        className={classes.button}
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                </FormControl>
-            </form>
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Brief about achievement"
+                                multiline
+                                rows={4}
+                                value={briefDescription}
+                                onChange={(e) => setBriefDescription(e.target.value)}
+                                error={!!errors.briefDescription}
+                                helperText={errors.briefDescription}
+                            />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImageAttachment(e.target.files[0])}
+                                error={!!errors.imageAttachment}
+                                helperText={errors.imageAttachment}
+                            />
+                        </FormControl>
+                        <FormControl className={classes.field}>
+                            <TextField
+                                label="Link to Website"
+                                value={linkToWebsite}
+                                onChange={(e) => setLinkToWebsite(e.target.value)}
+                                error={!!errors.linkToWebsite}
+                                helperText={errors.linkToWebsite}
+                            />
+                        </FormControl>
+                    </form>
+                    {/* </Grid> */}
+                    <Grid item xs={12} justifyContent="space-between" display="flex">
+                        {/* <FormControl className={classes.field}> */}
+                        <Button
+                            type="button"
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            justifyContent="flex"
+                            onClick={handleAddAchievement}
+                        >Add
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="contained"
+                            className={classes.button}
+                            onClick={handleCancel}
+                        >
+                            Cancel
+                        </Button>
+
+                        {/* </FormControl> */}
+                    </Grid>
+
+
+                </Paper>
+            </div>
         </div>
     );
 };
